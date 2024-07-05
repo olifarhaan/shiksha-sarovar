@@ -6,7 +6,7 @@ import { ThemeProvider } from "./utils/theme-provider";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
 import socketIO from "socket.io-client";
@@ -52,10 +52,16 @@ export default function RootLayout({
 
 const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isLoading } = useLoadUserQuery({});
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    socketId.on("connection", () => { });
+    setMounted(true);
+    socketId.on("connection", () => {});
   }, []);
+
+  if (!mounted) {
+    return <div style={{ visibility: "hidden" }}>{children}</div>;
+  }
 
   return <>{isLoading ? <Loader /> : <div>{children}</div>}</>;
 };

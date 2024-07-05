@@ -5,7 +5,7 @@ const nextConfig = {
       },
       experimental:{
         reactRoot: true,
-        suppressHydrationWarning: true,
+        // suppressHydrationWarning: true,
       }
 }
 
